@@ -4,19 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="All-in-One Calculator: Monthly Interest, Age, BMI, and EMI Calculators">
-    <meta name="keywords" content="Calculator, Interest Calculator, Age Calculator, BMI Calculator, EMI Calculator">
     <meta name="author" content="Calculator.in">
+    <meta name="google-adsense-account" content="ca-pub-XXXXXXXXXXXX"> <!-- Replace with your AdSense ID -->
     <title>All-in-One Calculator - Calculator.in</title>
-    
-    <!-- Google AdSense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-XXXXXXXXXXXXXX", // Replace with your AdSense ID
-            enable_page_level_ads: true
-        });
-    </script>
-
     <style>
         /* General Styles */
         body {
@@ -31,7 +21,6 @@
             text-align: center;
             margin: 20px 0;
         }
-        /* Navigation */
         nav {
             background: #28a745;
             padding: 10px;
@@ -47,7 +36,6 @@
         nav a:hover {
             text-decoration: underline;
         }
-        /* Container */
         .container {
             max-width: 400px;
             margin: 20px auto;
@@ -100,7 +88,7 @@
         <a onclick="showCalculator('emi')">EMI Calculator</a>
     </nav>
 
-    <h1 id="calc-title">Monthly Interest Calculator</h1>
+    <h1 id="calc-title">All-in-One Calculator</h1>
 
     <div class="container">
         <!-- Monthly Interest Calculator -->
@@ -118,17 +106,17 @@
         </div>
 
         <!-- Age Calculator -->
-        <div id="age" class="calculator" style="display: none;">
+        <div id="age" class="calculator" style="display:none;">
             <div class="input-group">
                 <label for="dob">Date of Birth:</label>
                 <input type="date" id="dob">
             </div>
-            <button onclick="calculateAge()">Calculate</button>
+            <button onclick="calculateAge()">Calculate Age</button>
             <div class="result" id="ageResult"></div>
         </div>
 
         <!-- BMI Calculator -->
-        <div id="bmi" class="calculator" style="display: none;">
+        <div id="bmi" class="calculator" style="display:none;">
             <div class="input-group">
                 <label for="weight">Weight (kg):</label>
                 <input type="number" id="weight">
@@ -137,12 +125,12 @@
                 <label for="height">Height (cm):</label>
                 <input type="number" id="height">
             </div>
-            <button onclick="calculateBMI()">Calculate</button>
+            <button onclick="calculateBMI()">Calculate BMI</button>
             <div class="result" id="bmiResult"></div>
         </div>
 
         <!-- EMI Calculator -->
-        <div id="emi" class="calculator" style="display: none;">
+        <div id="emi" class="calculator" style="display:none;">
             <div class="input-group">
                 <label for="loanAmount">Loan Amount (₹):</label>
                 <input type="number" id="loanAmount">
@@ -178,7 +166,13 @@
             let dob = new Date(document.getElementById('dob').value);
             let today = new Date();
             let age = today.getFullYear() - dob.getFullYear();
-            document.getElementById('ageResult').innerText = `Age: ${age} years`;
+            let monthDiff = today.getMonth() - dob.getMonth();
+            let dayDiff = today.getDate() - dob.getDate();
+
+            if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+                age--;
+            }
+            document.getElementById('ageResult').innerText = `Age: ${age} Years`;
         }
 
         function calculateBMI() {
@@ -190,10 +184,19 @@
 
         function calculateEMI() {
             let loanAmount = parseFloat(document.getElementById('loanAmount').value);
-            let interestRate = parseFloat(document.getElementById('interestRate').value) / 12 / 100;
-            let loanTenure = parseInt(document.getElementById('loanTenure').value);
-            let emi = loanAmount * interestRate * Math.pow(1 + interestRate, loanTenure) / (Math.pow(1 + interestRate, loanTenure) - 1);
-            document.getElementById('emiResult').innerText = `EMI: ₹${emi.toFixed(2)}`;
+            let annualInterestRate = parseFloat(document.getElementById('interestRate').value);
+            let loanTenure = parseFloat(document.getElementById('loanTenure').value);
+
+            let monthlyInterestRate = annualInterestRate / 12 / 100;
+            let emi = loanAmount * monthlyInterestRate * Math.pow(1 + monthlyInterestRate, loanTenure) / (Math.pow(1 + monthlyInterestRate, loanTenure) - 1);
+            let totalAmount = emi * loanTenure;
+            let totalInterest = totalAmount - loanAmount;
+
+            document.getElementById('emiResult').innerHTML = `
+                <p>Monthly EMI: ₹${emi.toFixed(2)}</p>
+                <p>Total Interest: ₹${totalInterest.toFixed(2)}</p>
+                <p>Total Amount: ₹${totalAmount.toFixed(2)}</p>
+            `;
         }
     </script>
 </body>
