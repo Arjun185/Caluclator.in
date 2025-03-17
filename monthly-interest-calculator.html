@@ -10,57 +10,78 @@
     <style>
         /* General Styles */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
             background: #f0f2f5;
             color: #28a745;
         }
-        h1 {
-            color: #28a745;
+
+        h1, h2 {
             text-align: center;
+            color: #28a745;
             margin: 20px 0;
         }
+
         nav {
             background: #28a745;
-            padding: 10px;
-            text-align: center;
+            display: flex;
+            justify-content: center;
+            padding: 10px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
+
         nav a {
             color: white;
             text-decoration: none;
             margin: 0 15px;
-            font-size: 1.2rem;
-            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            padding: 10px 20px;
+            background: #218838;
+            border-radius: 5px;
+            transition: background 0.2s;
         }
+
         nav a:hover {
-            text-decoration: underline;
+            background: #19692c;
         }
+
+        /* Container */
         .container {
-            max-width: 400px;
-            margin: 20px auto;
-            background: white;
-            padding: 20px;
-            border: 3px solid #28a745;
+            max-width: 900px;
+            margin: 30px auto;
+            background: #ffffff;
+            padding: 30px;
             border-radius: 12px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
-        .input-group {
-            margin-bottom: 15px;
+
+        .calculator {
+            display: none;
+            animation: fadeIn 0.5s;
         }
+
+        /* Input fields and buttons */
+        .input-group {
+            margin-bottom: 20px;
+        }
+
         .input-group label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             font-weight: bold;
         }
+
         .input-group input {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             border: 2px solid #28a745;
             border-radius: 5px;
             font-size: 1rem;
             box-sizing: border-box;
         }
+
         button {
             width: 100%;
             padding: 12px;
@@ -70,17 +91,49 @@
             border-radius: 5px;
             font-size: 1rem;
             cursor: pointer;
+            transition: background 0.2s;
         }
+
+        button:hover {
+            background: #19692c;
+        }
+
         .result {
             margin-top: 20px;
             font-weight: bold;
             font-size: 1.2rem;
             text-align: center;
+            color: #155724;
+        }
+
+        /* Footer */
+        footer {
+            background: #28a745;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            margin-top: 40px;
+            font-size: 0.9rem;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
     </style>
 </head>
 
 <body>
+
+    <h1>All-in-One Calculator</h1>
+
     <nav>
         <a onclick="showCalculator('interest')">Monthly Interest</a>
         <a onclick="showCalculator('age')">Age Calculator</a>
@@ -88,11 +141,10 @@
         <a onclick="showCalculator('emi')">EMI Calculator</a>
     </nav>
 
-    <h1 id="calc-title">All-in-One Calculator</h1>
-
     <div class="container">
         <!-- Monthly Interest Calculator -->
         <div id="interest" class="calculator">
+            <h2>Monthly Interest Calculator</h2>
             <div class="input-group">
                 <label for="principal">Principal Amount (₹):</label>
                 <input type="number" id="principal">
@@ -106,7 +158,8 @@
         </div>
 
         <!-- Age Calculator -->
-        <div id="age" class="calculator" style="display:none;">
+        <div id="age" class="calculator">
+            <h2>Age Calculator</h2>
             <div class="input-group">
                 <label for="dob">Date of Birth:</label>
                 <input type="date" id="dob">
@@ -116,7 +169,8 @@
         </div>
 
         <!-- BMI Calculator -->
-        <div id="bmi" class="calculator" style="display:none;">
+        <div id="bmi" class="calculator">
+            <h2>BMI Calculator</h2>
             <div class="input-group">
                 <label for="weight">Weight (kg):</label>
                 <input type="number" id="weight">
@@ -130,7 +184,8 @@
         </div>
 
         <!-- EMI Calculator -->
-        <div id="emi" class="calculator" style="display:none;">
+        <div id="emi" class="calculator">
+            <h2>EMI Calculator</h2>
             <div class="input-group">
                 <label for="loanAmount">Loan Amount (₹):</label>
                 <input type="number" id="loanAmount">
@@ -148,11 +203,14 @@
         </div>
     </div>
 
+    <footer>
+        © 2025 Calculator.in. All Rights Reserved. | <a href="#">Privacy Policy</a> | <a href="#">Contact Us</a>
+    </footer>
+
     <script>
         function showCalculator(calc) {
             document.querySelectorAll('.calculator').forEach(el => el.style.display = 'none');
             document.getElementById(calc).style.display = 'block';
-            document.getElementById('calc-title').innerText = calc.charAt(0).toUpperCase() + calc.slice(1) + " Calculator";
         }
 
         function calculateInterest() {
@@ -167,9 +225,7 @@
             let today = new Date();
             let age = today.getFullYear() - dob.getFullYear();
             let monthDiff = today.getMonth() - dob.getMonth();
-            let dayDiff = today.getDate() - dob.getDate();
-
-            if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
                 age--;
             }
             document.getElementById('ageResult').innerText = `Age: ${age} Years`;
@@ -181,23 +237,7 @@
             let bmi = weight / (height * height);
             document.getElementById('bmiResult').innerText = `BMI: ${bmi.toFixed(2)}`;
         }
-
-        function calculateEMI() {
-            let loanAmount = parseFloat(document.getElementById('loanAmount').value);
-            let annualInterestRate = parseFloat(document.getElementById('interestRate').value);
-            let loanTenure = parseFloat(document.getElementById('loanTenure').value);
-
-            let monthlyInterestRate = annualInterestRate / 12 / 100;
-            let emi = loanAmount * monthlyInterestRate * Math.pow(1 + monthlyInterestRate, loanTenure) / (Math.pow(1 + monthlyInterestRate, loanTenure) - 1);
-            let totalAmount = emi * loanTenure;
-            let totalInterest = totalAmount - loanAmount;
-
-            document.getElementById('emiResult').innerHTML = `
-                <p>Monthly EMI: ₹${emi.toFixed(2)}</p>
-                <p>Total Interest: ₹${totalInterest.toFixed(2)}</p>
-                <p>Total Amount: ₹${totalAmount.toFixed(2)}</p>
-            `;
-        }
     </script>
+
 </body>
 </html>
