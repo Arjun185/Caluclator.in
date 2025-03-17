@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Monthly Interest Calculator - Calculate interest with ease.">
-    <meta name="keywords" content="Monthly Interest Calculator, Finance Calculator, Interest Calculator">
+    <meta name="description" content="All-in-One Calculator: Monthly Interest, Age, BMI, and EMI Calculators">
+    <meta name="keywords" content="Calculator, Interest Calculator, Age Calculator, BMI Calculator, EMI Calculator">
     <meta name="author" content="Calculator.in">
-    <title>Monthly Interest Calculator - Calculator.in</title>
+    <title>All-in-One Calculator - Calculator.in</title>
     <style>
         /* General Styles */
         body {
@@ -21,7 +21,6 @@
             text-align: center;
             margin-top: 20px;
         }
-
         /* Navigation Bar */
         nav {
             background: rgb(40, 167, 69);
@@ -33,11 +32,11 @@
             text-decoration: none;
             margin: 0 15px;
             font-size: 1.2rem;
+            cursor: pointer;
         }
         nav a:hover {
             text-decoration: underline;
         }
-
         /* Container */
         .container {
             max-width: 400px;
@@ -82,116 +81,120 @@
             text-align: center;
         }
     </style>
+
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({
+            google_ad_client: "ca-pub-XXXXXXXXXXXXXX", // Replace with your AdSense ID
+            enable_page_level_ads: true
+        });
+    </script>
 </head>
+
 <body>
+    <nav>
+        <a onclick="showCalculator('interest')">Monthly Interest</a>
+        <a onclick="showCalculator('age')">Age Calculator</a>
+        <a onclick="showCalculator('bmi')">BMI Calculator</a>
+        <a onclick="showCalculator('emi')">EMI Calculator</a>
+    </nav>
 
-<!-- Navigation Bar -->
-<nav>
-    <a href="monthly-interest-calculator.html">Monthly Interest</a>
-    <a href="age-calculator.html">Age Calculator</a>
-    <a href="bmi-calculator.html">BMI Calculator</a>
-    <a href="emi-calculator.html">EMI Calculator</a>
-</nav>
+    <h1 id="calc-title">Monthly Interest Calculator</h1>
 
-<h1>Monthly Interest Calculator</h1>
+    <div class="container">
+        <!-- Monthly Interest Calculator -->
+        <div id="interest" class="calculator">
+            <div class="input-group">
+                <label for="principal">Principal Amount (₹):</label>
+                <input type="number" id="principal">
+            </div>
+            <div class="input-group">
+                <label for="rate">Monthly Interest Rate (%):</label>
+                <input type="number" id="rate">
+            </div>
+            <button onclick="calculateInterest()">Calculate</button>
+            <div class="result" id="interestResult"></div>
+        </div>
 
-<!-- AdSense Ad (Top Ad) -->
-<div style="text-align: center; margin-bottom: 20px;">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <!-- Top Ad -->
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-xxxxxxxxxxxxxxxx"
-         data-ad-slot="1234567890"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
+        <!-- Age Calculator -->
+        <div id="age" class="calculator" style="display: none;">
+            <div class="input-group">
+                <label for="dob">Date of Birth:</label>
+                <input type="date" id="dob">
+            </div>
+            <button onclick="calculateAge()">Calculate</button>
+            <div class="result" id="ageResult"></div>
+        </div>
+
+        <!-- BMI Calculator -->
+        <div id="bmi" class="calculator" style="display: none;">
+            <div class="input-group">
+                <label for="weight">Weight (kg):</label>
+                <input type="number" id="weight">
+            </div>
+            <div class="input-group">
+                <label for="height">Height (cm):</label>
+                <input type="number" id="height">
+            </div>
+            <button onclick="calculateBMI()">Calculate</button>
+            <div class="result" id="bmiResult"></div>
+        </div>
+
+        <!-- EMI Calculator -->
+        <div id="emi" class="calculator" style="display: none;">
+            <div class="input-group">
+                <label for="loanAmount">Loan Amount (₹):</label>
+                <input type="number" id="loanAmount">
+            </div>
+            <div class="input-group">
+                <label for="interestRate">Interest Rate (%):</label>
+                <input type="number" id="interestRate">
+            </div>
+            <div class="input-group">
+                <label for="loanTenure">Loan Tenure (Months):</label>
+                <input type="number" id="loanTenure">
+            </div>
+            <button onclick="calculateEMI()">Calculate</button>
+            <div class="result" id="emiResult"></div>
+        </div>
+    </div>
+
     <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
+        function showCalculator(calc) {
+            document.querySelectorAll('.calculator').forEach(el => el.style.display = 'none');
+            document.getElementById(calc).style.display = 'block';
+            document.getElementById('calc-title').innerText = calc.charAt(0).toUpperCase() + calc.slice(1) + " Calculator";
+        }
+
+        function calculateInterest() {
+            let principal = parseFloat(document.getElementById('principal').value);
+            let rate = parseFloat(document.getElementById('rate').value);
+            let interest = (principal * rate) / 100;
+            document.getElementById('interestResult').innerText = `Monthly Interest: ₹${interest.toFixed(2)}`;
+        }
+
+        function calculateAge() {
+            let dob = new Date(document.getElementById('dob').value);
+            let today = new Date();
+            let age = today.getFullYear() - dob.getFullYear();
+            document.getElementById('ageResult').innerText = `Age: ${age} years`;
+        }
+
+        function calculateBMI() {
+            let weight = parseFloat(document.getElementById('weight').value);
+            let height = parseFloat(document.getElementById('height').value) / 100;
+            let bmi = weight / (height * height);
+            document.getElementById('bmiResult').innerText = `BMI: ${bmi.toFixed(2)}`;
+        }
+
+        function calculateEMI() {
+            let loanAmount = parseFloat(document.getElementById('loanAmount').value);
+            let interestRate = parseFloat(document.getElementById('interestRate').value) / 12 / 100;
+            let loanTenure = parseInt(document.getElementById('loanTenure').value);
+            let emi = loanAmount * interestRate * Math.pow(1 + interestRate, loanTenure) / (Math.pow(1 + interestRate, loanTenure) - 1);
+            document.getElementById('emiResult').innerText = `EMI: ₹${emi.toFixed(2)}`;
+        }
     </script>
-</div>
-
-<div class="container">
-    <div class="input-group">
-        <label for="principal">Principal Amount (₹):</label>
-        <input type="number" id="principal" placeholder="Enter Principal Amount">
-    </div>
-
-    <div class="input-group">
-        <label for="rate">Monthly Interest Rate (%):</label>
-        <input type="number" id="rate" placeholder="Enter Monthly Interest Rate">
-    </div>
-
-    <div class="input-group">
-        <label for="fromDate">From Date:</label>
-        <input type="date" id="fromDate">
-    </div>
-
-    <div class="input-group">
-        <label for="toDate">To Date:</label>
-        <input type="date" id="toDate">
-    </div>
-
-    <button onclick="calculateMonthlyInterest()">Calculate Interest</button>
-
-    <div class="result" id="result"></div>
-</div>
-
-<!-- AdSense Ad (Bottom Ad) -->
-<div style="text-align: center; margin-top: 20px;">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <!-- Bottom Ad -->
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-xxxxxxxxxxxxxxxx"
-         data-ad-slot="0987654321"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-</div>
-
-<script>
-    function calculateMonthlyInterest() {
-        const principal = parseFloat(document.getElementById('principal').value);
-        const rate = parseFloat(document.getElementById('rate').value);
-        const fromDate = new Date(document.getElementById('fromDate').value);
-        const toDate = new Date(document.getElementById('toDate').value);
-
-        if (isNaN(principal) || isNaN(rate) || isNaN(fromDate.getTime()) || isNaN(toDate.getTime())) {
-            document.getElementById('result').innerText = "Please enter valid inputs.";
-            return;
-        }
-
-        if (toDate < fromDate) {
-            document.getElementById('result').innerText = "To Date must be after From Date.";
-            return;
-        }
-
-        // Calculate months between dates
-        let months = (toDate.getFullYear() - fromDate.getFullYear()) * 12 + (toDate.getMonth() - fromDate.getMonth());
-
-        // Adjust if the day of the month in 'toDate' is earlier than 'fromDate'
-        if (toDate.getDate() < fromDate.getDate()) {
-            months--;
-        }
-
-        if (months < 0) {
-            months = 0;
-        }
-
-        // Calculate interest
-        const interest = (principal * rate * months) / 100;
-        const totalAmount = principal + interest;
-
-        // Show results
-        document.getElementById('result').innerHTML = `
-            Total Months: ${months} <br>
-            Interest: ₹${interest.toFixed(2)} <br>
-            Total Amount: ₹${totalAmount.toFixed(2)}
-        `;
-    }
-</script>
-
 </body>
 </html>
