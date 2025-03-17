@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Calculate Monthly Interest easily with our free online calculators.">
+    <meta name="keywords" content="Interest Calculator, Monthly Interest, Loan Calculator">
+    <meta name="author" content="Calculator.in">
+    <title>Calculator.in - Free Monthly Interest Calculator</title>
+</head>
+<body>
+    <!-- Include Navigation -->
+    <div id="navbar"></div>
+
+    <h1>Welcome to Calculator.in</h1>
+    <p>Use our free Monthly Interest Calculator to quickly calculate interest on your loans, savings, and more!</p>
+    <p><a href="monthly-interest-calculator.html">Try the Interest Calculator</a></p>
+
+    <script>
+        // Load navigation dynamically
+        fetch('navbar.html')
+            .then(response => response.text())
+            .then(data => document.getElementById('navbar').innerHTML = data);
+    </script>
+</body>
+</html>
